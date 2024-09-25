@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Alert, StatusBar, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { color } from '../../core/constants/color';
 import { Vector } from '../../core/assets/icon/vector';
@@ -13,7 +13,7 @@ import { login } from './authSlice';
 import { useForm, Controller } from 'react-hook-form';
 import { useLoginMutation } from './authApi';
 import { useTranslation } from 'react-i18next';
-
+import { FaceBookSign, GoogleSign } from '../../core/utils/OAuth';
 
 export default function Login() {
     const { height: HEIGHT, width } = useWindowDimensions();
@@ -45,9 +45,25 @@ export default function Login() {
     };
 
 
+    // handle google OAuth
+    const handleGoogleSigning = async () => {
+        const result = await GoogleSign();
+        if (result === 'success') {
+            dispatch(login());
+        }
+    };
 
-    const handleGoogleSigning = () => { };
-    const handleFacebookSigning = () => { };
+    // handle facebook OAuth
+    const handleFacebookSigning = async () => {
+        try {
+            const result = await FaceBookSign();
+            if (result === 'success') {
+                dispatch(login());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <View style={styles.container}>

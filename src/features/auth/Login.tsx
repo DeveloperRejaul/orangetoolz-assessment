@@ -28,7 +28,9 @@ export default function Login() {
 
 
     useEffect(() => {
-        if (res.isSuccess) { dispatch(login()); }
+        if (res.isSuccess) {
+            dispatch(login());
+        }
     }, [res.isSuccess, dispatch]);
 
     const handleLogin = (data) => {
@@ -41,6 +43,12 @@ export default function Login() {
         }
         i18n.changeLanguage('en');
     };
+
+
+
+    const handleGoogleSigning = () => { };
+    const handleFacebookSigning = () => { };
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={color.primary} />
@@ -95,12 +103,12 @@ export default function Login() {
                 <View style={styles.social}>
                     <Button
                         icon={<GoogleIcon />}
-                        onPress={() => { }}
+                        onPress={handleGoogleSigning}
                         variant="social" bg={color.white}
                     />
                     <Button
                         icon={<FacebookIcon />}
-                        onPress={() => { }}
+                        onPress={handleFacebookSigning}
                         variant="social"
                         bg={color.white}
                     />

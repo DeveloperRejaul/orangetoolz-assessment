@@ -58,6 +58,18 @@ emilys
 emilyspass
 ```
 
+## Google Auth Credentials
+
+```bash
+# get debug keystore information
+keytool -list -v -keystore android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+# get my-upload-key.keystore information
+keytool -list -v -keystore android/app/my-upload-key.keystore -alias my-key-alias -storepass rejaul -keypass rejaul
+
+
+```
+
 ## Congratulations! :tada:
 
 You've successfully run and modified your React Native App. :partying_face:

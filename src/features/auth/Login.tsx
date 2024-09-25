@@ -1,18 +1,37 @@
 import { StatusBar, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { color } from '../../core/constants/color';
 import { Vector } from '../../core/assets/icon/vector';
 import { Line } from '../../core/assets/icon/lines';
 import Input from '../../core/components/input';
 import Button from '../../core/components/button';
-import SocialButton from '../../core/components/social-button';
 import { GoogleIcon } from '../../core/assets/icon/google';
 import { FacebookIcon } from '../../core/assets/icon/facebook';
 import { Group } from '../../core/assets/icon/group';
+import { useAppDispatch } from '../../core/hooks/rtk';
+import { login } from './authSlice';
+import { useForm, Controller } from 'react-hook-form';
+import { useLoginMutation } from './authApi';
+
 
 export default function Login() {
     const { height: HEIGHT, width } = useWindowDimensions();
     const TOP_HEIGHT = HEIGHT / 3;
+    const dispatch = useAppDispatch();
+    const [loginUser, res] = useLoginMutation();
+
+    const { control, handleSubmit } = useForm({
+        defaultValues: { password: '', username: '' },
+    });
+
+
+    useEffect(() => {
+        if (res.isSuccess) { dispatch(login()); }
+    }, [res.isSuccess, dispatch]);
+
+    const handleLogin = (data) => {
+        loginUser({ username: data.username.trim(), password: data.password.trim() });
+    };
 
     return (
         <View style={styles.container}>
@@ -31,17 +50,51 @@ export default function Login() {
             </View>
             {/* Bottom part */}
             <View style={styles.bottom}>
-                <Input label="Email address" />
-                <Input label="Password" type="password" />
-                <Button text="Log in" onPress={() => { }} />
+                <Controller
+                    control={control}
+                    rules={{ required: true }}
+                    name="username"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <Input
+                            label="User name"
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    rules={{ required: true }}
+                    name="password"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <Input
+                            label="Password"
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                            type="password"
+                        />
+                    )}
+                />
+                <Button text="Log in" onPress={handleSubmit(handleLogin)} isLoading={res.isLoading} />
                 <View style={styles.option}>
                     <View style={styles.line2} />
                     <Text style={styles.text}>Or, Log in with</Text>
                     <View style={styles.line2} />
                 </View>
                 <View style={styles.social}>
-                    <SocialButton icon={<GoogleIcon />} />
-                    <SocialButton icon={<FacebookIcon />} />
+                    <Button
+                        icon={<GoogleIcon />}
+                        onPress={() => { }}
+                        variant="social" bg={color.white}
+                    />
+                    <Button
+                        icon={<FacebookIcon />}
+                        onPress={() => { }}
+                        variant="social"
+                        bg={color.white}
+                    />
                 </View>
             </View>
         </View >

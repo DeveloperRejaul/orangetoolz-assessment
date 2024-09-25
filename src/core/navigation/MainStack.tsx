@@ -1,7 +1,10 @@
 import React from 'react';
 import Home from '../../features/home/Home';
-import { NativeStackNavigatorProps } from 'react-native-screens/lib/typescript/native-stack/types';
+import Details from '../../features/home/details';
 
-export default function MainStack(Stack: NativeStackNavigatorProps) {
-    return <Stack.Screen name="Home" component={Home} />;
+export default function MainStack(Stack: any) {
+    return <>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Details" component={Details} />
+    </>;
 }

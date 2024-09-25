@@ -4,6 +4,7 @@ import { color } from '../constants/color';
 import { reduceColorOpacity } from '../utils/color';
 import { EyeIcon } from '../assets/icon/eye';
 import { EyeOffIcon } from '../assets/icon/eye-off';
+import { SearchIcon } from '../assets/icon/search';
 
 
 interface InputProps extends TextInputProps {
@@ -20,6 +21,7 @@ export default function Input(props: InputProps) {
         <View>
             <Text style={styles.label}>{props.label}</Text>
             <View style={styles.inputBody} >
+                {type === 'search' && <SearchIcon size={23} />}
                 <TextInput {...rest} style={styles.input} secureTextEntry={isPasswordVisible} />
                 {type === 'password' && (isPasswordVisible ? <EyeOffIcon size={24} color={color.black} onPress={() => setIsPasswordVisible(pre => !pre)} /> : <EyeIcon onPress={() => setIsPasswordVisible(pre => !pre)} size={24} color={color.black} />)}
             </View>

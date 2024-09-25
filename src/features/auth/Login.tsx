@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../core/hooks/rtk';
 import { login } from './authSlice';
 import { useForm, Controller } from 'react-hook-form';
 import { useLoginMutation } from './authApi';
+import { useTranslation } from 'react-i18next';
 
 
 export default function Login() {
@@ -19,6 +20,7 @@ export default function Login() {
     const TOP_HEIGHT = HEIGHT / 3;
     const dispatch = useAppDispatch();
     const [loginUser, res] = useLoginMutation();
+    const { t, i18n } = useTranslation();
 
     const { control, handleSubmit } = useForm({
         defaultValues: { password: '', username: '' },
@@ -33,6 +35,12 @@ export default function Login() {
         loginUser({ username: data.username.trim(), password: data.password.trim() });
     };
 
+    const handleTranslation = () => {
+        if (i18n.language === 'en') {
+            return i18n.changeLanguage('bn');
+        }
+        i18n.changeLanguage('en');
+    };
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={color.primary} />
@@ -47,6 +55,7 @@ export default function Login() {
                 <View style={styles.group}>
                     <Group />
                 </View>
+                <Text onPress={handleTranslation} style={styles.testBtn}>{t('name')}</Text>
             </View>
             {/* Bottom part */}
             <View style={styles.bottom}>
@@ -136,5 +145,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         columnGap: 8,
+    },
+    testBtn: {
+        fontSize: 20,
+        position: 'absolute',
+        backgroundColor: color.white,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        borderRadius: 10,
+        right: 10,
+        color: color.black,
+        fontWeight: 'bold',
     },
 });
